@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Peskov Sergey <peskovdev@proton.me>"]
 readme = "README.md"
-packages = [{include = "auth_ms"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.10"
