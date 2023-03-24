@@ -7,8 +7,8 @@ from services import generate_tokens, get_user, refresh_tokens, token_required
 @app.route("/login", methods=["POST"])
 def login():
     # Find user in database
-    username = request.json.get("username")
-    password = request.json.get("password")
+    username = request.form.get("username")
+    password = request.form.get("password")
     user = get_user(username)
 
     if user and user.get("password") == password:
