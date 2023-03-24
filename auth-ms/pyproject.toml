@@ -4,13 +4,14 @@ version = "0.1.0"
 description = ""
 authors = ["Peskov Sergey <peskovdev@proton.me>"]
 readme = "README.md"
-packages = [{include = "auth_ms"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.10"
 flask = "^2.2.3"
 python-dotenv = "^1.0.0"
 pyjwt = "^2.6.0"
+flask-cors = "^3.0.10"
 
 
 [tool.poetry.group.dev.dependencies]

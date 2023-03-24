@@ -22,3 +22,4 @@
   ```
   echo 'JWT_SECRET_KEY="e7c83a28f8b8d597afedf2134979ed8ae9f472d1"' > .env
   ```
+- `docker-compose up --build`
