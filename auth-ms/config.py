@@ -12,3 +12,4 @@ class Configuration:
     JWT_ACCESS_EXPIRATION_DELTA = timedelta(minutes=30)
     JWT_REFRESH_EXPIRATION_DELTA = timedelta(days=30)
     SECRET_KEY = getenv("JWT_SECRET_KEY")
+    CORS_ORIGINS = getenv("AUTH_CORS_ORIGINS").split(",")
