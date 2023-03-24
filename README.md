@@ -17,3 +17,8 @@
 
 ## Setup:
 - `git clone https://github.com/codequest-team/codequest.git`
+- `cd codequest`
+- In the root of the project create `.env` file (and substitute your values if necessary):
+  ```
+  echo 'JWT_SECRET_KEY="e7c83a28f8b8d597afedf2134979ed8ae9f472d1"' > .env
+  ```

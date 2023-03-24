@@ -9,6 +9,8 @@ packages = [{include = "auth_ms"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 flask = "^2.2.3"
+python-dotenv = "^1.0.0"
+pyjwt = "^2.6.0"
 
 
 [tool.poetry.group.dev.dependencies]
