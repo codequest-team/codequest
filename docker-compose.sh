@@ -18,7 +18,7 @@ DEV=$(
     env_file:
       - ./.envs/.local/.postgres
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data/
+      - ./postgres-data:/var/lib/postgresql/data/
 
   auth-ms:
     container_name: 'auth-ms'
@@ -46,6 +46,8 @@ DEV=$(
     container_name: front-ms
     image: node:lts-alpine
     working_dir: /front-ms
+    env_file:
+      - ./.envs/.local/.front-ms
     command: sh -c "yarn install && yarn dev --host=0.0.0.0 --port=8080"
     volumes:
       - ./front-ms:/front-ms
@@ -53,7 +55,7 @@ DEV=$(
       - 8080:8080
 
 volumes:
-  postgres_data:
+  postgres-data:
 EOF
 )
 
