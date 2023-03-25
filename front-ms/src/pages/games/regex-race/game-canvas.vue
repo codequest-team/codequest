@@ -1,13 +1,6 @@
 <template>
   <div class="flex flex-col">
     <canvas id="canvas" class="bg-gray-600 rounded-md" :width="`${width}px`" :height="`${height}px`" />
-    <div class="flex flex-col border mt-2 rounded-md bg-slate-500">
-      <button class="bg-gray-700 rounded text-white p-1 m-1" @click.stop="shuffleCars">Рандом</button>
-      <button class="bg-gray-700 rounded text-white p-1 m-1" @click.stop="moveRandomCarForward">
-        Сдвинуть случайную машину вперед
-      </button>
-      <button class="bg-gray-700 rounded text-white p-1 m-1" @click.stop="emit('addNewPlayer')">Добавить машину</button>
-    </div>
   </div>
 </template>
 
@@ -20,6 +13,7 @@ const props = defineProps({
   height: { type: Number, required: true },
   numPlayers: { type: Number, required: true },
   numTasks: { type: Number, required: true },
+  currentUser: { type: Object, required: true },
 });
 
 const emit = defineEmits(["addNewPlayer"]);
@@ -35,28 +29,33 @@ const stepSize = computed(() => canvas.value?.height / (props.numTasks + 1));
 
 const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-const shuffleCars = () => {
-  for (let i = 0; i < props.numPlayers; i++) {
-    players.value[i].position = randInt(1, props.numTasks + 1);
-  }
-};
+// const shuffleCars = () => {
+//   for (let i = 0; i < props.numPlayers; i++) {
+//     players.value[i].position = randInt(1, props.numTasks + 1);
+//   }
+// };
 
-const moveRandomCarForward = () => {
-  players.value[randInt(0, props.numPlayers - 1)].targetPosition += 1;
-};
+// const moveRandomCarForward = () => {
+//   players.value[randInt(0, props.numPlayers - 1)].targetPosition += 1;
+// };
 
-const addCar = () => {
+const addCar = (username) => {
   const player = {
     id: players.value.length + 1,
     position: 1,
     targetPosition: 1,
-    username: `user_${players.value.length + 1}`,
+    username: username,
     carImage: new Image(),
   };
 
   player.carImage.src = `/src/assets/cars/car-${player.id % 6}.svg`;
 
   players.value.push(player);
+};
+
+const moveCarUp = (id) => {
+  let player = players.value.find((p) => p.id === id);
+  player.targetPosition += 1;
 };
 
 const updateField = async () => {
@@ -69,12 +68,13 @@ const updateField = async () => {
 const initPlayers = () => {
   players.value.length = 0;
 
-  for (let i = 0; i < props.numPlayers; i++) {
-    addCar();
-  }
+  addCar(props.currentUser.username);
 };
 
-watch(() => props.numPlayers, () => initPlayers());
+watch(
+  () => props.numPlayers,
+  () => initPlayers()
+);
 
 const animate = () => {
   requestAnimationFrame(animate);
@@ -92,10 +92,12 @@ onMounted(() => {
   ctx.value = canvas.value.getContext("2d");
 
   // Установить размер canvas
-  canvas.value.width = 400;
+  canvas.value.width = 300;
   canvas.value.height = 400;
 
   initPlayers();
   animate();
 });
+
+defineExpose({ moveCarUp });
 </script>

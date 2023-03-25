@@ -1,6 +1,5 @@
 import Home from "@/pages/home.vue";
 import Games from "@/pages/games/games.vue";
-import RegexRace from "@/pages/games/regex-race/game.vue";
 
 export default [
   {
@@ -18,7 +17,7 @@ export default [
   {
     path: "/regex-race",
     name: "RegexRace",
-    component: RegexRace,
+    component: () => import("../pages/games/regex-race/game.vue"),
     meta: { layout: "default", needsAuthorization: true },
   },
   {
