@@ -1,1 +1,1 @@
-from learn import check_regex
+from .learn import check_regex
