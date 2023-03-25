@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  backend:
+  auth-ms:
     container_name: 'auth-ms'
     build: ./auth-ms/
     command: python main.py
@@ -10,3 +10,18 @@ services:
       - ./.env
     ports:
       - 5000:5000
+    depends_on:
+      - postgresql
+  postgresql:
+    container_name: 'postgresql'
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  postgres_data:
