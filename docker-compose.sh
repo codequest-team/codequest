@@ -19,6 +19,9 @@ DEV=$(
       - ./.envs/.local/.postgres
     volumes:
       - ./postgres-data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+
 
   auth-ms:
     container_name: 'auth-ms'
