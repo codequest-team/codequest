@@ -1,6 +1,7 @@
 import re
 
 def check_regex(text, regex, expected_result) -> bool:
+    print(regex)
     try:
         result = re.findall(regex, text)
     except re.error:
@@ -17,8 +18,8 @@ def check_regex(text, regex, expected_result) -> bool:
 
 if __name__ == '__main__':
     print(check_regex(
-        '1 2 3 4 5 6 78 9',
-        '[1-4]',
-        '19.01.2018,01.09.2017'
+        '2+3 223 2223',
+        r'2\+3',
+        '2+3'
         )
         )
