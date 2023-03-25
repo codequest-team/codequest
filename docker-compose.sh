@@ -18,7 +18,7 @@ DEV=$(
     env_file:
       - ./.envs/.local/.postgres
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data/
+      - ./postgres-data:/var/lib/postgresql/data/
 
   auth-ms:
     container_name: 'auth-ms'
@@ -53,7 +53,7 @@ DEV=$(
       - 8080:8080
 
 volumes:
-  postgres_data:
+  postgres-data:
 EOF
 )
 
