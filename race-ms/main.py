@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from tortoise.contrib.fastapi import register_tortoise
+#from tortoise.contrib.fastapi import register_tortoise
 
 from api import router
 from config import settings
@@ -17,12 +17,13 @@ origins = ['*']
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=['*'],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+'''
 register_tortoise(
     app,
     db_url=settings.get_db_uri(),
@@ -30,6 +31,6 @@ register_tortoise(
     generate_schemas=True,
     add_exception_handlers=True,
     )
-
+'''
 
 app.include_router(router)
