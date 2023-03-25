@@ -21,6 +21,18 @@ DEV=$(
     ports:
       - 5000:5000
 
+  race-ms:
+    container_name: race-ms
+    build: ./race-ms
+    working_dir: /race-ms
+    command: uvicorn main:app
+    env_file:
+      - ./.envs/.local/.race-ms
+      - ./.envs/.local/.postgres
+      - ./.envs/.local/.redis
+    ports:
+      - 8000:8000
+
   frontend:
     container_name: frontend
     image: node:lts-alpine
