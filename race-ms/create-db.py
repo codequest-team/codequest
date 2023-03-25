@@ -1,4 +1,4 @@
-from tortoise import Tortoise, run_async
+"""from tortoise import Tortoise, run_async
 from config import settings
 
 async def connectToDatabase():
@@ -12,4 +12,4 @@ async def main():
     await Tortoise.generate_schemas()
     
 if __name__ == '__main__':
-    run_async(main())
+    run_async(main())"""
