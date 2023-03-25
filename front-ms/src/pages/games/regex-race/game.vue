@@ -3,7 +3,7 @@
     <div class="container mx-auto flex sm:flex-nowrap flex-wrap">
       <div class="lg:w-2/3 md:w-1/2 bg-slate-100 rounded-lg overflow-hidden m-2 p-3 flex justify-center relative">
         <div class="flex flex-row flex-nowrap">
-          <div class="md:w-1/4 mr-2 min-w-96">
+          <div class="md:w-1/4 mr-2 min-w-96 max-w-fit">
             <game-canvas
               ref="gameCanvasRef"
               :width="100"
