@@ -25,7 +25,6 @@ DEV=$(
     container_name: race-ms
     build: ./race-ms
     working_dir: /race-ms
-    command: uvicorn main:app
     env_file:
       - ./.envs/.local/.race-ms
       - ./.envs/.local/.postgres
