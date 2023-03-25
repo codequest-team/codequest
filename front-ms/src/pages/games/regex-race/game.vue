@@ -66,11 +66,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import gameCanvas from "./game-canvas.vue";
+import { RegexRace } from "@/api/race";
 
 const numPlayers = ref(4);
 const numTasks = ref(5);
 
 const increaseNumberOfPlayers = () => (numPlayers.value += 1);
+
+onMounted(async () => {
+  await RegexRace.Learn.list()
+    .then((r) => console.log(r.data))
+    .catch((e) => {});
+})
 </script>
