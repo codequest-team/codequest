@@ -10,7 +10,7 @@ import User from "./user";
 const api = axios.create({
   baseURL: `${CONF.AUTH_BASE_URL}/`,
   headers: {
-    Authorization: localStorage.getItem("access_token") ? `Token ${localStorage.getItem("access_token")}` : "",
+    Authorization: localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "",
   },
   transformResponse: [
     function (data) {
