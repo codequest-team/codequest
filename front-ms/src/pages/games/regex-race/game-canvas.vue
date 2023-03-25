@@ -92,7 +92,7 @@ onMounted(() => {
   ctx.value = canvas.value.getContext("2d");
 
   // Установить размер canvas
-  canvas.value.width = 300;
+  canvas.value.width = 100;
   canvas.value.height = 400;
 
   initPlayers();
