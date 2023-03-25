@@ -4,8 +4,8 @@ from os.path import dirname, join
 
 from dotenv import load_dotenv  # type: ignore
 
-load_dotenv(join(dirname(__file__), "../.envs/auth-ms"))
-load_dotenv(join(dirname(__file__), "../.envs/postgres"))
+load_dotenv(join(dirname(__file__), "../.envs/.local/.auth-ms"))
+load_dotenv(join(dirname(__file__), "../.envs/.local/.postgres"))
 
 
 class Configuration:
