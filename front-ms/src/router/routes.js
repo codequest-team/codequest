@@ -27,6 +27,12 @@ export default [
     meta: { layout: "empty", needsAuthorization: false },
   },
   {
+    path: "/sign-up",
+    name: "SignUp",
+    component: () => import("../pages/sign-up/sign-up.vue"),
+    meta: { layout: "empty", needsAuthorization: false },
+  },
+  {
     path: "/about",
     name: "About",
     component: () => import("../pages/about.vue"),
