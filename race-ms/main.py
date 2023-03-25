@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-#from tortoise.contrib.fastapi import register_tortoise
+from tortoise.contrib.fastapi import register_tortoise
 
 from api import router
 from config import settings
@@ -23,14 +23,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-'''
+
 register_tortoise(
     app,
-    db_url=settings.get_db_uri(),
+    db_url="sqlite://database/db.sqlite3",
     modules={"models": ["database.models"]},
     generate_schemas=True,
     add_exception_handlers=True,
     )
-'''
+
 
 app.include_router(router)
