@@ -3,7 +3,7 @@
     <div class="container mx-auto flex sm:flex-nowrap flex-wrap">
       <div class="lg:w-2/3 md:w-1/2 bg-slate-100 rounded-lg overflow-hidden m-2 p-3 flex justify-center relative">
         <div class="flex flex-row flex-nowrap">
-          <div class="md:w-1/4 mr-1">
+          <div class="md:w-1/4 mr-2 min-w-96">
             <game-canvas
               ref="gameCanvasRef"
               :width="100"
@@ -34,7 +34,7 @@
 
         <div class="py-1 w-full">
           <p class="text-gray-500 truncate font-bold md:text-lg">Задача</p>
-          {{ currentTask.taskDescription }}
+          <div v-html="marked(currentTask.taskDescription)"></div>
         </div>
 
         <div class="py-1 w-full">
@@ -130,7 +130,7 @@ const increaseNumberOfPlayers = () => (numPlayers.value += 1);
 const tasks = ref([]);
 const currentTask = ref(null);
 const form = ref({
-  regex: "хохо",
+  regex: "",
 });
 
 const response = ref(null);
