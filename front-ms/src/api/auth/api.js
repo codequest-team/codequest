@@ -1,14 +1,14 @@
 import axios from "axios";
 import humps from "humps";
 // import qs from "qs";
-import CONF from "../config";
-import router from "../router";
-import store from "../store";
+import CONF from "@/config";
+import router from "@/router";
+import store from "@/store";
 import { Notify } from "quasar";
-import { Auth } from ".";
+import User from "./user";
 
 const api = axios.create({
-  baseURL: `${CONF.WSGI_BASE_URL}/`,
+  baseURL: `${CONF.AUTH_BASE_URL}/`,
   headers: {
     Authorization: localStorage.getItem("access_token") ? `Token ${localStorage.getItem("access_token")}` : "",
   },
@@ -62,10 +62,8 @@ api.interceptors.response.use(
       // }
 
       if (error.response.status === 401) {
-        console.log(localStorage.getItem("refresh_token"))
         if (localStorage.getItem("refresh_token")) {
-          console.log('--------------')
-          Auth.refreshToken()
+          User.refreshToken()
             .then((r) => {
               localStorage.setItem("access_token", r.data.accessToken);
               localStorage.setItem("refresh_token", r.data.refreshToken);

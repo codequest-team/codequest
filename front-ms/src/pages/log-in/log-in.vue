@@ -57,7 +57,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { required } from "@/utils/validators";
-import { Auth } from "@/api";
+import { User } from "@/api/auth";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -87,7 +87,7 @@ const onLogIn = async () => {
   formData.append("username", form.value.username);
   formData.append("password", form.value.password);
 
-  await Auth.login(formData)
+  await User.login(formData)
     .then((r) => {
       localStorage.setItem("access_token", r.data.accessToken);
       localStorage.setItem("refresh_token", r.data.refreshToken);

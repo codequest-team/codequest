@@ -1,9 +1,9 @@
-import { Auth } from "../../../api";
+import { User } from "@/api/auth";
 import router from "@/router";
 
 export const getUser = async (ctx) => {
 
-  await Auth.getCredentials()
+  await User.getCredentials()
     .then((r) => ctx.commit("SET_USER", r.data))
     .catch((e) => {});
 };

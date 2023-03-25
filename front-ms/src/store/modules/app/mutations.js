@@ -1,4 +1,4 @@
-import { api } from "@/api";
+import { api } from "@/api/auth";
 
 export function SET_USER(state, user) {
   state.user = user;

@@ -1,7 +1,5 @@
 import api from "./api";
 
-const EDN_POINT = "";
-
 export default {
   getCredentials() {
     const ACCESS_TOKEN = localStorage.getItem("access_token");
