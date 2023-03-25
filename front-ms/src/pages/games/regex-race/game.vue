@@ -31,6 +31,11 @@
         </div>
 
         <div class="py-1 w-full">
+          <p class="text-gray-500 truncate">Ожидаемый результат</p>
+          {{ currentTask.expectedResult }}
+        </div>
+
+        <div class="py-1 w-full">
           <p class="text-gray-500 truncate">Регулярное выражение</p>
           <q-input
             dense
@@ -39,7 +44,6 @@
             autogrow
             lazy-rules="ondemand"
             :rules="[required, (val) => maxLength(val, 255)]"
-            hint="Введите любое, у меня нет рабочих задач в базе"
           />
         </div>
 
@@ -153,8 +157,6 @@ const onSubmit = async () => {
   await RegexRace.Learn.validateAnswer(currentTask.value.level, formData)
     .then((r) => {
       response.value = r.data;
-
-      response.value.isTrue = true;
 
       if (response.value.isTrue) {
         gameCanvasRef.value.moveCarUp(1);
