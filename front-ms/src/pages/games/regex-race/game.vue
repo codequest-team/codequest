@@ -30,7 +30,7 @@
         v-if="currentTask != null"
         class="lg:w-1/2 md:w-1/2 bg-slate-100 flex flex-col md:ml-auto w-full mx-2 md:py-8 md:mt-2 rounded-lg p-4"
       >
-        <p class="uppercase pb-2 font-bold md:text-lg">{{ currentTask.title }}</p>
+        <p class="uppercase pb-2 font-bold md:text-lg">{{ currentTaskTitle }}</p>
 
         <div class="py-1 w-full">
           <p class="text-gray-500 truncate font-bold md:text-lg">Задача</p>
@@ -131,6 +131,11 @@ const tasks = ref([]);
 const currentTask = ref(null);
 const form = ref({
   regex: "",
+});
+
+const currentTaskTitle = computed(() => {
+  const indexOfCurLevel = tasks.value.findIndex((t) => t.level === currentTask.value.level);
+  return `${indexOfCurLevel + 1} / ${tasks.value.length} - ${currentTask.value.title}`;
 });
 
 const response = ref(null);
