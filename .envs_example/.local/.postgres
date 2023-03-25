@@ -1,5 +1,5 @@
-PS_URL = "23"
-PS_PORT = "2342"
-PS_LOGIN = "234"
-PS_DB_NAME = "asdf"
-PS_PASSWORD = "fsdf"
+POSTGRES_USER="postgres"
+POSTGRES_PASSWORD="paSsw0rdExam91e"
+POSTGRES_DB="codequest"
+
+SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:5432/${POSTGRES_DB}"

@@ -1,16 +1,6 @@
-#!/bin/bash
-
-CONTENT=$(
-  cat <<EOF
 version: '3'
 
 services:
-EOF
-)
-
-DEV=$(
-  cat <<EOF
-
   postgresql:
     container_name: 'postgresql'
     image: postgres
@@ -54,43 +44,3 @@ DEV=$(
 
 volumes:
   postgres_data:
-EOF
-)
-
-PROD=$(
-  cat <<EOF
-
-  frontend:
-    container_name: frontend
-    build: ./frontend
-    ports:
-      - "443:443"
-      - "80:80"
-    depends_on:
-      - backend
-EOF
-)
-
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-
-[ "$#" -eq 1 ] || {
-  printf "%b%s" "$RED" "Ошибка. Необходимо ввести 1 аргумент."
-  exit 1
-}
-
-arg="$1"
-case "$arg" in
-dev) CONTENT+=$DEV ;;
-prod) CONTENT+=$PROD ;;
-*)
-  printf "%b%s" "$RED" "Ошибка. Недопустимый аргумент."
-  exit 1
-  ;;
-esac
-
-cat <<EOF >docker-compose.yml
-$CONTENT
-EOF
-
-printf "%b%s" "$GREEN" "docker-compose.sh успешно сгенерирован."
