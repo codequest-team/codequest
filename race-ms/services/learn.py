@@ -1,7 +1,11 @@
 import re
 
 def check_regex(text, regex, expected_result) -> bool:
-    result = re.findall(regex, text)
+    try:
+        result = re.findall(regex, text)
+    except re.error:
+        return (False, 'invalid regex')
+
     expected_result = expected_result.split(',')
 
     result.sort()
