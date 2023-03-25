@@ -46,6 +46,8 @@ DEV=$(
     container_name: front-ms
     image: node:lts-alpine
     working_dir: /front-ms
+    env_file:
+      - ./.envs/.local/.front-ms
     command: sh -c "yarn install && yarn dev --host=0.0.0.0 --port=8080"
     volumes:
       - ./front-ms:/front-ms

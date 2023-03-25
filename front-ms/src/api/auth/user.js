@@ -4,7 +4,7 @@ export default {
   getCredentials() {
     const ACCESS_TOKEN = localStorage.getItem("access_token");
     api.defaults.headers.Authorization = ACCESS_TOKEN;
-    return api.get(`/get_credentials`);
+    return api.get(`/get-credentials`);
   },
   login(data) {
     api.defaults.headers.Authorization = "";
