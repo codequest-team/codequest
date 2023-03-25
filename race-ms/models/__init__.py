@@ -1,1 +1,1 @@
-from .tasks import Task
+from .tasks import Task, TaskResponse
