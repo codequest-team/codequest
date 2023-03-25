@@ -4,7 +4,8 @@ from os.path import dirname, join
 
 from dotenv import load_dotenv  # type: ignore
 
-load_dotenv(join(dirname(__file__), "../.env"))
+load_dotenv(join(dirname(__file__), "../.envs/auth-ms"))
+load_dotenv(join(dirname(__file__), "../.envs/postgres"))
 
 
 class Configuration:
@@ -12,4 +13,7 @@ class Configuration:
     JWT_ACCESS_EXPIRATION_DELTA = timedelta(minutes=30)
     JWT_REFRESH_EXPIRATION_DELTA = timedelta(days=30)
     SECRET_KEY = getenv("JWT_SECRET_KEY")
+
     CORS_ORIGINS = getenv("AUTH_CORS_ORIGINS").split(",")
+
+    SQLALCHEMY_DATABASE_URI = getenv("SQLALCHEMY_DATABASE_URI")
