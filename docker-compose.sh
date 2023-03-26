@@ -57,8 +57,17 @@ DEV=$(
     ports:
       - 8080:8080
 
+race-ms
+  redis:
+    container_name: redis
+    image: redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server"]
+    ports:
+      - "6379:6379"
+      
 volumes:
   postgres-data:
+
 EOF
 )
 

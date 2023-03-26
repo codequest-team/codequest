@@ -16,9 +16,17 @@ async def create_lobby(
     lobby_id = services.generate_lobby_id(5)
     token = request.headers['authorization']
     user = service.validate_token(token)
-    
+    services.create_lobby(lobby_id, user)
+
     return {'user': user, 'lobby_id': lobby_id}
 
-@router.get("/{lobby}", tags=["lobby"])
-async def get_lobby(lobby: str):
-    return {"lobby": lobby}
+@router.get("/{lobby_id}", tags=["lobby"])
+async def get_lobby(
+    lobby_id: str,
+    request: Request,
+    service: services.MultiplayerService = Depends(),
+    ):
+    token = request.headers['authorization']
+    user = service.validate_token(token)
+    services.connect_to_lobby(lobby_id, user)
+    return services.get_lobby(lobby_id)
