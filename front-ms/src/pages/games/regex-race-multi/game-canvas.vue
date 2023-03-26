@@ -11,7 +11,6 @@ import { drawRoad, drawCars, drawUsernames } from "./helpers";
 const props = defineProps({
   width: { type: Number, required: true },
   height: { type: Number, required: true },
-  numPlayers: { type: Number, required: true },
   numTasks: { type: Number, required: true },
   currentUser: { type: Object, required: true },
 });
@@ -23,11 +22,13 @@ const ctx = ref(null);
 
 const players = ref([]);
 
-const laneWidth = computed(() => props.width / props.numPlayers);
+const laneWidth = computed(() => props.width / numPlayers.value);
 
 const stepSize = computed(() => canvas.value?.height / (props.numTasks + 1));
 
 const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+const numPlayers = computed(() => players.value.length);
 
 // const shuffleCars = () => {
 //   for (let i = 0; i < props.numPlayers; i++) {
@@ -53,28 +54,17 @@ const addCar = (username) => {
   players.value.push(player);
 };
 
-const moveCarUp = (id) => {
-  let player = players.value.find((p) => p.id === id);
+const moveCarUp = (username) => {
+  let player = players.value.find((p) => p.username === username);
   player.targetPosition += 1;
 };
 
 const updateField = async () => {
   ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
-  drawRoad(ctx.value, canvas.value.width, canvas.value.height, props.numPlayers, laneWidth.value, stepSize.value);
+  drawRoad(ctx.value, canvas.value.width, canvas.value.height, numPlayers.value, laneWidth.value, stepSize.value);
   await drawCars(ctx.value, canvas.value.width, canvas.value.height, laneWidth.value, stepSize.value, players.value);
   drawUsernames(ctx.value, canvas.value.width, canvas.value.height, laneWidth.value, players.value);
 };
-
-const initPlayers = () => {
-  players.value.length = 0;
-
-  addCar(props.currentUser.username);
-};
-
-watch(
-  () => props.numPlayers,
-  () => initPlayers()
-);
 
 const animate = () => {
   requestAnimationFrame(animate);
@@ -92,12 +82,11 @@ onMounted(() => {
   ctx.value = canvas.value.getContext("2d");
 
   // Установить размер canvas
-  canvas.value.width = 100;
+  canvas.value.width = 300;
   canvas.value.height = 400;
 
-  initPlayers();
   animate();
 });
 
-defineExpose({ moveCarUp });
+defineExpose({ moveCarUp, addCar });
 </script>

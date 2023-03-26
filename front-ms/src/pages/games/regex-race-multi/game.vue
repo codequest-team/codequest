@@ -1,122 +1,52 @@
 <template>
   <section class="text-gray-600 body-font relative">
     <div class="container mx-auto flex sm:flex-nowrap flex-wrap">
-      <div class="lg:w-2/3 md:w-1/2 bg-slate-100 rounded-lg overflow-hidden m-2 p-3 flex justify-center relative">
-        <div class="flex flex-row flex-nowrap">
-          <div class="md:w-1/4 mr-2 min-w-96 max-w-fit">
-            <game-canvas
-              ref="gameCanvasRef"
-              :width="400"
-              :height="400"
-              :num-players="numPlayers"
-              :num-tasks="numTasks"
-              @add-new-player="increaseNumberOfPlayers"
-              :current-user="currentUser"
-            />
-          </div>
-
-          <div class="md:w-3/4 mx-2">
-            <div
-              v-if="currentTask !== null"
-              class="w-full max-h-96 border rounded border-gray-300 p-4 overflow-auto"
-              v-html="marked(currentTask.theoryText)"
-            ></div>
-          </div>
-        </div>
+      <div
+        v-show="isLobbyCreated"
+        class="lg:w-2/3 md:w-1/2 bg-slate-100 rounded-lg overflow-hidden m-2 p-3 flex justify-center relative"
+      >
+        <game-canvas
+          ref="gameCanvasRef"
+          :width="300"
+          :height="400"
+          :num-players="numPlayers"
+          :num-tasks="numTasks"
+          :current-user="currentUser"
+        />
       </div>
 
-      <q-form
-        @submit="onSubmit()"
-        v-if="currentTask != null"
-        class="lg:w-1/2 md:w-1/2 bg-slate-100 flex flex-col md:ml-auto w-full mx-2 md:py-8 md:mt-2 rounded-lg p-4"
-      >
-        <p class="uppercase pb-2 font-bold md:text-lg">{{ currentTaskTitle }}</p>
-
-        <div class="py-1 w-full">
-          <p class="text-gray-500 truncate font-bold md:text-lg">Задача</p>
-          <div v-html="marked(currentTask.taskDescription)"></div>
-        </div>
-
-        <div class="py-1 w-full">
-          <p class="text-gray-500 truncate font-bold md:text-lg">Текст</p>
-          {{ currentTask.text }}
-        </div>
-
-        <div class="py-1 w-full">
-          <p class="text-gray-500 truncate font-bold md:text-lg">Ожидаемый результат</p>
-          {{ currentTask.expectedResult }}
-        </div>
-
-        <div class="py-1 w-full">
-          <p class="text-gray-500 truncate font-bold md:text-lg">Регулярное выражение</p>
-          <q-input
-            dense
-            outlined
-            v-model.trim="form.regex"
-            autogrow
-            lazy-rules="ondemand"
-            :rules="[required, (val) => maxLength(val, 255)]"
-          />
-        </div>
-
-        <div class="py-1 w-full">
-          <p class="text-gray-500 truncate font-bold md:text-lg">Результат</p>
-          <q-banner
-            rounded
-            :class="{
-              'bg-green-4 text-white': response?.isTrue === true,
-              'bg-red-4 text-white': response?.isTrue === false,
-              'bg-blue-grey-2': response === null,
-            }"
-          >
-            <template v-slot:avatar>
-              <q-icon name="done" size="md" color="white" v-if="response?.isTrue === true" />
-              <q-icon name="close" size="md" color="white" v-else-if="response?.isTrue === false" />
-            </template>
-            {{ response?.result }}
-          </q-banner>
-        </div>
-
-        <q-btn
-          class="py-1 my-2 w-full"
-          label="Проверить"
-          type="submit"
-          color="primary"
-          v-if="response?.isTrue !== true && isGameOver !== true"
+      <template v-if="isGameStarted">
+        <formDataVue
+          class="lg:w-1/2 md:w-1/2 bg-slate-100 flex flex-col md:ml-auto w-full mx-2 md:py-8 md:mt-2 rounded-lg p-4"
+          @on-task-solved="moveCarUp"
+          :current-user="currentUser"
         />
-
-        <q-btn
-          class="py-1 my-2 w-full"
-          label="Следующая"
-          color="primary"
-          v-if="response?.isTrue === true && isGameOver !== true"
-          @click.stop="nextTask()"
+      </template>
+      <template v-else>
+        <lobyy-gen
+          class="lg:w-1/2 md:w-1/2 bg-slate-100 flex flex-col md:ml-auto w-full mx-2 md:py-8 md:mt-2 rounded-lg p-4"
+          @on-lobby-created="() => (isLobbyCreated = true)"
         />
-
-        <q-btn
-          class="py-1 my-2 w-full"
-          label="Начать с начала"
-          color="primary"
-          v-if="isGameOver === true"
-          @click.stop="restartGame()"
-        />
-      </q-form>
-
-      <div></div>
+      </template>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import gameCanvas from "./game-canvas.vue";
 import { RegexRace } from "@/api/race";
 import { required, maxLength } from "@/utils/validators";
 import { Notify, Platform } from "quasar";
 import { useStore } from "vuex";
-import { marked } from "marked";
+
+import formDataVue from "./form-data.vue";
+import lobyyGen from "./lobyy-gen.vue";
 
 const store = useStore();
+
+const isGameStarted = ref(false);
+const isLobbyCreated = ref(false);
 
 const currentUser = computed(() => store.getters["user"]);
 
@@ -127,25 +57,29 @@ const numTasks = ref(5);
 
 const increaseNumberOfPlayers = () => (numPlayers.value += 1);
 
-const tasks = ref([]);
-const currentTask = ref(null);
-const form = ref({
-  regex: "",
-});
+// const tasks = ref([]);
+// const currentTask = ref(null);
+// const form = ref({
+//   regex: "",
+// });
 
-const currentTaskTitle = computed(() => {
-  const indexOfCurLevel = tasks.value.findIndex((t) => t.level === currentTask.value.level);
-  return `${indexOfCurLevel + 1} / ${tasks.value.length} - ${currentTask.value.title}`;
-});
+// const currentTaskTitle = computed(() => {
+//   const indexOfCurLevel = tasks.value.findIndex((t) => t.level === currentTask.value.level);
+//   return `${indexOfCurLevel + 1} / ${tasks.value.length} - ${currentTask.value.title}`;
+// });
 
-const response = ref(null);
+// const response = ref(null);
 
-const isGameOver = ref(false);
+// const isGameOver = ref(false);
 
-const restartGame = () => {
-  currentTask.value = tasks.value[0];
-  isGameOver.value = false;
-  form.value.regex = "";
+// const restartGame = () => {
+//   currentTask.value = tasks.value[0];
+//   isGameOver.value = false;
+//   form.value.regex = "";
+// };
+
+const moveCarUp = (playerUsername) => {
+  gameCanvasRef.value.moveCarUp(playerUsername);
 };
 
 const nextTask = () => {
@@ -181,6 +115,12 @@ const onSubmit = async () => {
     .catch((e) => {});
 };
 
+watch(isLobbyCreated, () => {
+  if (isLobbyCreated.value) {
+    gameCanvasRef.value.addCar(currentUser.value.username);
+  }
+});
+
 onMounted(async () => {
   await RegexRace.Learn.list()
     .then((r) => {
@@ -189,12 +129,5 @@ onMounted(async () => {
       numTasks.value = tasks.value.length;
     })
     .catch((e) => {});
-
-
-  await RegexRace.Lobby.create()
-    .then((r) => {
-      console.log(r.data)
-    })
-    .catch((e) => {})
 });
 </script>

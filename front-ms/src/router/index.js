@@ -15,7 +15,8 @@ router.beforeEach(async (to, from, next) => {
       await store.dispatch("getUser");
       next();
     } else {
-      next("/log-in");
+      console.log(to)
+      next("/log-in?target=/regex-race-multi?lobby=DbTdp");
     }
   } else {
     next();
