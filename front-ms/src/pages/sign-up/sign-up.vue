@@ -31,7 +31,7 @@
               lazy-rules="ondemand"
               :rules="[required]"
               type="username"
-              label="Имя пользователь"
+              label="Юзернейм"
               @keydown.enter.prevent="onLogIn"
               :autofocus="true"
             >
