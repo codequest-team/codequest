@@ -26,11 +26,12 @@
 import { ref, onMounted } from "vue";
 import { RegexRace } from "@/api/race";
 import { useRoute, useRouter } from "vue-router";
+import { LobbySocket } from "@/socket";
 
 const route = useRoute();
 const router = useRouter();
 
-const emit = defineEmits(["onLobbyCreated"]);
+const emit = defineEmits(["onLobbyCreated", "onNewUserConnected"]);
 const isLobbyCreated = ref(false);
 const isGameStarted = ref(false);
 
@@ -52,6 +53,10 @@ const createLobby = async () => {
       emit("onLobbyCreated");
       isLobbyCreated.value = true;
       router.replace({ query: { ...route.query, lobby: lobby.value.lobbyId } });
+
+      LobbySocket.connect(lobby.value.lobbyId, (data) => {
+        emit("onNewUserConnected", data);
+      });
     })
     .catch((e) => {});
 };
@@ -62,6 +67,10 @@ onMounted(async () => {
       lobby.value = r.data;
       isLobbyCreated.value = true;
       emit("onLobbyCreated");
+
+      LobbySocket.connect(route.query.lobby, (data) => {
+        emit("onNewUserConnected", data);
+      });
     });
   }
 });

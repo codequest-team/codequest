@@ -40,18 +40,28 @@ const numPlayers = computed(() => players.value.length);
 //   players.value[randInt(0, props.numPlayers - 1)].targetPosition += 1;
 // };
 
-const addCar = (username) => {
-  const player = {
-    id: players.value.length + 1,
-    position: 1,
-    targetPosition: 1,
-    username: username,
-    carImage: new Image(),
-  };
+const addCar = (users) => {
+  players.value.length = 0;
 
-  player.carImage.src = `/src/assets/cars/car-${player.id % 6}.svg`;
+  for (const key in users) {
+    const player = {
+      id: players.value.length + 1,
+      position: 1,
+      targetPosition: 1,
+      username: users[key],
+      carImage: new Image(),
+    };
 
-  players.value.push(player);
+    console.log(player)
+
+    console.log((players.value.length + 1) % 6)
+
+    player.carImage.src = `/src/assets/cars/car-${(players.value.length + 1) % 6}.svg`;
+
+    players.value.push(player);
+
+    console.log(`${key}: ${users[key]}`);
+  }
 };
 
 const moveCarUp = (username) => {

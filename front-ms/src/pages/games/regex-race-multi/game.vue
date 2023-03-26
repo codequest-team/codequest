@@ -26,6 +26,7 @@
         <lobyy-gen
           class="lg:w-1/2 md:w-1/2 bg-slate-100 flex flex-col md:ml-auto w-full mx-2 md:py-8 md:mt-2 rounded-lg p-4"
           @on-lobby-created="() => (isLobbyCreated = true)"
+          @on-new-user-connected="onNewUserConnected"
         />
       </template>
     </div>
@@ -56,6 +57,10 @@ const numPlayers = ref(1);
 const numTasks = ref(5);
 
 const increaseNumberOfPlayers = () => (numPlayers.value += 1);
+
+const onNewUserConnected = (data) => {
+  gameCanvasRef.value.addCar(data);
+}
 
 // const tasks = ref([]);
 // const currentTask = ref(null);
@@ -115,11 +120,11 @@ const onSubmit = async () => {
     .catch((e) => {});
 };
 
-watch(isLobbyCreated, () => {
-  if (isLobbyCreated.value) {
-    gameCanvasRef.value.addCar(currentUser.value.username);
-  }
-});
+// watch(isLobbyCreated, () => {
+//   if (isLobbyCreated.value) {
+//     gameCanvasRef.value.addCar(currentUser.value.username);
+//   }
+// });
 
 onMounted(async () => {
   await RegexRace.Learn.list()
