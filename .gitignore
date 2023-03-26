@@ -1,2 +1,3 @@
 .envs
 docker-compose.yml
+postgres-data

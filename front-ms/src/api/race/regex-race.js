@@ -7,8 +7,8 @@ export default {
     list(params = {}) {
       return api.get(`${EDN_POINT}/learn`, { params: params });
     },
-    validateAnswer(data) {
-      return api.post(`${EDN_POINT}/learn/`, data);
+    validateAnswer(id, data) {
+      return api.post(`${EDN_POINT}/learn/${id}`, data);
     },
     // create(data) {
     //   return api.post(`${EDN_POINT}/educations/`, data);

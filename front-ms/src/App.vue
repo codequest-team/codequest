@@ -15,4 +15,6 @@ import emptyLayout from "./layouts/empty-layout.vue";
 const route = useRoute();
 
 const layout = computed(() => markRaw(route.meta.layout === 'default' ? defaultLayout : emptyLayout));
+
+document.title = "CODE QUEST"
 </script>
