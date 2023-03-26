@@ -57,7 +57,6 @@ DEV=$(
     ports:
       - 8080:8080
 
-race-ms
   redis:
     container_name: redis
     image: redis
