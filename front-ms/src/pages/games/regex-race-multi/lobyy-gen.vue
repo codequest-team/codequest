@@ -6,7 +6,7 @@
     <template v-if="isLobbyCreated && !isGameStarted">
       <p class="text-green-800">Лобби создано! Отправьте ссылку друзьям и дождитесь их подключения.</p>
       <p class="text-red-800">
-        http://localhost:8080{{ route.fullPath }}
+        {{ url }}
         <q-btn @click="copyToClipboard()" flat class="q-ml-sm" color="grey-9" round size="xs" icon="content_copy" />
       </p>
     </template>
@@ -14,10 +14,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { RegexRace } from "@/api/race";
 import { useRoute, useRouter } from "vue-router";
 import { LobbySocket } from "@/socket";
+import CONF from "@/config";
 
 const route = useRoute();
 const router = useRouter();
@@ -30,9 +31,13 @@ const lobby = ref(null);
 
 const isUserLobbyCreator = ref(false);
 
+const url = computed(() => {
+  return `${CONF.HOST}${route.fullPath}`
+})
+
 const copyToClipboard = () => {
   var textarea = document.createElement("textarea");
-  textarea.value = `http://localhost:8080${route.fullPath}`;
+  textarea.value = url.value;
   document.body.appendChild(textarea);
   textarea.select();
   document.execCommand("copy");
