@@ -5,6 +5,7 @@
         <q-card flat>
           <q-card-section>
             <q-input
+              v-show="false"
               ref="nicknameRef"
               v-model.trim="form.nickname"
               outlined
@@ -114,7 +115,7 @@ const passwordRef = ref(null);
 const password2Ref = ref(null);
 
 const form = ref({
-  nickname: null,
+  nickname: "sdfsdf",
   username: null,
   password: null,
   password2: null,
@@ -147,7 +148,6 @@ const onLogIn = async () => {
 
   await User.signup(formData)
     .then((r) => {
-      console.log(r.data);
       localStorage.setItem("access_token", r.data.accessToken);
       localStorage.setItem("refresh_token", r.data.refreshToken);
       router.push("/");
