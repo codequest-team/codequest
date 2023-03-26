@@ -51,13 +51,10 @@ async def websocket_endpoint(
 ):  
     #await websocket.accept()
     await manager.connect(websocket)
-    lobby_data = services.connect_to_lobby(lobby_id, services.get_current_user(token))
-    print(lobby_data)
-    await manager.broadcast(json.dumps(lobby_data))
     try:
         while True:
             lobby_data = services.connect_to_lobby(lobby_id, services.get_current_user(token))
-    
+            await manager.broadcast(json.dumps(lobby_data))
             data = await websocket.receive_json()
             await manager.broadcast('start game!')
 
