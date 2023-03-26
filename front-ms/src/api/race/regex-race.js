@@ -10,14 +10,19 @@ export default {
     validateAnswer(id, data) {
       return api.post(`${EDN_POINT}/learn/${id}`, data);
     },
-    // create(data) {
-    //   return api.post(`${EDN_POINT}/educations/`, data);
-    // },
+    validateAnswer(id, data) {
+      return api.post(`${EDN_POINT}/learn/${id}`, data);
+    },
     // update(id, data) {
     //   return api.patch(`${EDN_POINT}/educations/${id}/`, data);
     // },
     // delete(id) {
     //   return api.delete(`${EDN_POINT}/educations/${id}/`);
     // },
+  },
+  Lobby: {
+    create() {
+      return api.post(`${EDN_POINT}/lobby`);
+    },
   },
 };

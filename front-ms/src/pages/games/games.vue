@@ -1,7 +1,7 @@
 <template>
   <div class="container px-5 py-5 mx-auto">
     <div class="flex flex-wrap -m-4 text-center">
-      <div class="p-4 md:w-1/4 sm:w-1/2 w-full cursor-pointer" @click.stop="$router.push('/regex-race')">
+      <div class="p-4 md:w-1/4 sm:w-1/2 w-full cursor-pointer" @click.stop="dialog = true">
         <div class="border-2 border-gray-200 px-4 py-6 rounded-lg hover:bg-indigo-100">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,23 @@
         </div>
       </div>
     </div>
+
+    <q-dialog v-model="dialog">
+      <q-card class="q-pa-sm">
+        <q-card-section>
+          <p class="text-uppercase q-mt-md">Выберите режим игры</p>
+        </q-card-section>
+
+        <q-btn class="m-2" color="primary" label="Одиночный" to="/regex-race"/>
+
+        <q-btn class="m-2" color="primary" label="Мультиплеер" to="/regex-race-multi"/>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+
+const dialog = ref(false);
+</script>
