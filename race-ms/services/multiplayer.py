@@ -20,16 +20,27 @@ def get_current_user(token: str):
 def create_lobby(lobby_id: str, user: models.User):
     redis_db.hmset(lobby_id, {'creator': user.username})
 
+def stringify_dict(bstring_dict):
+    res = {}
+    for k,v in bstring_dict.items():
+        res[k.decode("utf-8") ]=v.decode("utf-8") 
+    return res
+
 def connect_to_lobby(lobby_id: str, user: models.User):
     lobby = redis_db.hgetall(lobby_id)
-    print(len(lobby.keys()))
-    if lobby[b'creator'].decode("utf-8") != user.username:
+    print(lobby.values())
+    if lobby[b'creator'].decode("utf-8") != user.username and bytes(user.username, 'utf-8') not in lobby.values():
         lobby[len(lobby.keys())] = user.username
         redis_db.hmset(lobby_id, lobby)
+
+    return stringify_dict(redis_db.hgetall(lobby_id))
+
 
 def get_lobby(lobby_id: str):
     res = redis_db.hgetall(lobby_id)
     return res
+
+
 
 class MultiplayerService():
 

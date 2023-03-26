@@ -1,10 +1,12 @@
 import redis
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
 
+import services
 from api import router
 from config import settings
+
 
 app = FastAPI(
     title='Regex Racing',
@@ -35,3 +37,19 @@ register_tortoise(
 
 
 app.include_router(router)
+
+@app.websocket("/lobby/{lobby_id}/ws")
+async def websocket_endpoint(
+    *,
+    lobby_id: str,
+    token: str,
+    websocket: WebSocket,
+):  
+    await websocket.accept()
+    
+    lobby_data = services.connect_to_lobby(lobby_id, services.get_current_user(token))
+    print(lobby_data)
+    await websocket.send_json(lobby_data)
+    while True:
+        data = await websocket.receive_text()
+        await websocket.send_json({'r': 200})
