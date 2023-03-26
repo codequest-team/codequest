@@ -41,6 +41,14 @@ DEV=$(
       - ./front-ms:/front-ms
     ports:
       - 8080:8080
+
+  redis:
+    container_name: redis
+    image: redis
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server"]
+    ports:
+      - "6379:6379"
+
 EOF
 )
 
