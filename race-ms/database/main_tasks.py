@@ -144,4 +144,3 @@ tasks = [
         "expected_result": "191186",
     },
 ]
-print(tasks)
