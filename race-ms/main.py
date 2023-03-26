@@ -46,18 +46,17 @@ manager = ConnectionManager()
 async def websocket_endpoint(
     *,
     lobby_id: str,
-    token: str,
+    token: str|None,
     websocket: WebSocket,
-):  
-    #await websocket.accept()
+):
     await manager.connect(websocket)
     try:
         while True:
-            lobby_data = services.connect_to_lobby(lobby_id, services.get_current_user(token))
-            await manager.broadcast(json.dumps(lobby_data))
+            if token is not None:
+                lobby_data = services.connect_to_lobby(lobby_id, services.get_current_user(token))
+                await manager.broadcast(json.dumps(lobby_data))
             data = await websocket.receive_json()
             await manager.broadcast('start game!')
 
     except WebSocketDisconnect:
-        print('qwer')
         manager.disconnect(websocket)
