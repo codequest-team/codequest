@@ -24,5 +24,8 @@ export default {
     create() {
       return api.post(`${EDN_POINT}/lobby`);
     },
+    get(lobbyId) {
+      return api.get(`${EDN_POINT}/lobby/${lobbyId}`);
+    },
   },
 };

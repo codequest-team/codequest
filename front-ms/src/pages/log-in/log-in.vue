@@ -47,7 +47,12 @@
               <q-btn size="lg" color="primary" class="full-width text-white py-2" label="Войти" @click="onLogIn" />
             </div>
 
-            <button class="pt-2 underline text-slate-700" @click.stop="$router.push('/sign-up')">регистрация</button>
+            <button
+              class="pt-2 underline text-slate-700"
+              @click.stop="$router.push({ path: '/sign-up', query: $route.query })"
+            >
+              регистрация
+            </button>
           </q-card-section>
         </q-card>
       </q-page>
@@ -59,8 +64,9 @@
 import { ref, computed } from "vue";
 import { required } from "@/utils/validators";
 import { User } from "@/api/auth";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
+const route = useRoute();
 const router = useRouter();
 
 const usernameRef = ref(null);
@@ -92,7 +98,11 @@ const onLogIn = async () => {
     .then((r) => {
       localStorage.setItem("access_token", r.data.accessToken);
       localStorage.setItem("refresh_token", r.data.refreshToken);
-      router.push("/");
+      if (route.query.target) {
+        router.push(route.query.target)
+      } else {
+        router.push("/");
+      }
     })
     .catch((e) => {});
 };

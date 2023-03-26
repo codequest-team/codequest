@@ -3,7 +3,6 @@
     <q-page-container>
       <q-page class="row justify-center items-center">
         <q-card flat>
-
           <q-card-section>
             <q-input
               ref="nicknameRef"
@@ -87,7 +86,12 @@
               <q-btn size="lg" color="primary" class="full-width text-white" label="Создать аккаунт" @click="onLogIn" />
             </div>
 
-            <button class="pt-2 underline text-slate-700" @click.stop="$router.push('/log-in')">Уже есть аккаунт?</button>
+            <button
+              class="pt-2 underline text-slate-700"
+              @click.stop="$router.push({ path: '/log-in', query: $route.query })"
+            >
+              Уже есть аккаунт?
+            </button>
           </q-card-section>
         </q-card>
       </q-page>
@@ -133,7 +137,7 @@ const onLogIn = async () => {
     Notify.create({
       type: "warning",
       message: "Пароли не совпадают",
-    })
+    });
   }
   const formData = new FormData();
 
@@ -143,7 +147,7 @@ const onLogIn = async () => {
 
   await User.signup(formData)
     .then((r) => {
-      console.log(r.data)
+      console.log(r.data);
       localStorage.setItem("access_token", r.data.accessToken);
       localStorage.setItem("refresh_token", r.data.refreshToken);
       router.push("/");

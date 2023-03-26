@@ -53,7 +53,6 @@
             dense
             outlined
             v-model.trim="form.regex"
-            autogrow
             lazy-rules="ondemand"
             :rules="[required, (val) => maxLength(val, 255)]"
           />
