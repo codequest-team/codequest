@@ -63,7 +63,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { required } from "@/utils/validators";
-import { User } from "@/api/auth";
+import { api, User } from "@/api/auth";
 import { useRouter, useRoute } from "vue-router";
 
 const route = useRoute();
@@ -98,6 +98,7 @@ const onLogIn = async () => {
     .then((r) => {
       localStorage.setItem("access_token", r.data.accessToken);
       localStorage.setItem("refresh_token", r.data.refreshToken);
+
       if (route.query.target) {
         router.push(route.query.target)
       } else {

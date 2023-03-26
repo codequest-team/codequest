@@ -27,6 +27,7 @@
           class="lg:w-1/2 md:w-1/2 bg-slate-100 flex flex-col md:ml-auto w-full mx-2 md:py-8 md:mt-2 rounded-lg p-4"
           @on-lobby-created="() => (isLobbyCreated = true)"
           @on-new-user-connected="onNewUserConnected"
+          @on-game-started="() => isGameStarted = true"
         />
       </template>
     </div>

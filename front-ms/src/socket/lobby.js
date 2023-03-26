@@ -10,31 +10,44 @@ const connect = (lobby, fn) => {
 
   const params = new URLSearchParams({ token: ACCESS_TOKEN });
 
-
   socket = new WebSocket(`${CONF.RACE_BASE_URL_WS}/lobby/${lobby}/ws?${params.toString()}`);
 
   socket.addEventListener("message", (e) => fn(humps.camelizeKeys(JSON.parse(e.data))));
 
-  // socket.addEventListener("close", (e) => {
-  //   if (e.code !== 1000) {
-  //     setTimeout(() => connect(planId, userId, fn), 5000);
-  //   }
-  // });
+  socket.addEventListener("close", (e) => {
+    console.log(e.code)
+    if (e.code !== 1000) {
+      setTimeout(() => connect(lobby, fn), 5000);
+    }
+  });
 };
 
 const disconnect = () => socket?.close();
 
+// const send = (message) => {
+//   const decamelizedMessage = JSON.stringify(humps.decamelizeKeys(message, { split: /(?=[A-Z0-9])/ }));
+
+//   if (socket.readyState === WebSocket.OPEN) {
+//     socket.send("decamelizedMessage");
+//     return;
+//   }
+
+//   socket.addEventListener("open", () => {
+//     socket.send(decamelizedMessage, { once: true });
+//   });
+// };
+
 const send = (message) => {
   // const decamelizedMessage = JSON.stringify(humps.decamelizeKeys(message, { split: /(?=[A-Z0-9])/ }));
 
-  // if (socket.readyState === WebSocket.OPEN) {
-  //   socket.send(decamelizedMessage);
-  //   return;
-  // }
+  if (socket.readyState === WebSocket.OPEN) {
+    socket.send(message);
+    return;
+  }
 
-  // socket.addEventListener("open", () => {
-  //   socket.send(decamelizedMessage, { once: true });
-  // });
+  socket.addEventListener("open", () => {
+    socket.send(message, { once: true });
+  });
 };
 
 export default {

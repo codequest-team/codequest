@@ -52,15 +52,9 @@ const addCar = (users) => {
       carImage: new Image(),
     };
 
-    console.log(player)
-
-    console.log((players.value.length + 1) % 6)
-
     player.carImage.src = `/src/assets/cars/car-${(players.value.length + 1) % 6}.svg`;
 
     players.value.push(player);
-
-    console.log(`${key}: ${users[key]}`);
   }
 };
 
