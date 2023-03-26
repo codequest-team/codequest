@@ -1,22 +1,13 @@
 <template>
   <div class="py-1 w-full">
     <q-btn class="my-2" label="Создать лобби" @click.stop="createLobby()" v-if="!isLobbyCreated" />
-    <q-btn class="my-2" color="primary" label="Начать игру" @click.stop="createLobby()" v-else />
-    <p>{{ lobby }}</p>
+    <q-btn class="my-2" color="primary" label="Начать игру" @click.stop="startGame()" v-else-if="isGameStarted != true"/>
 
     <template v-if="isLobbyCreated && !isGameStarted">
       <p class="text-green-800">Лобби создано! Отправьте ссылку друзьям и дождитесь их подключения.</p>
       <p class="text-red-800">
         http://localhost:8080{{ route.fullPath }}
-        <q-btn
-          @click="copyToClipboard()"
-          flat
-          class="q-ml-sm"
-          color="grey-9"
-          round
-          size="xs"
-          icon="content_copy"
-        />
+        <q-btn @click="copyToClipboard()" flat class="q-ml-sm" color="grey-9" round size="xs" icon="content_copy" />
       </p>
     </template>
   </div>
@@ -31,11 +22,13 @@ import { LobbySocket } from "@/socket";
 const route = useRoute();
 const router = useRouter();
 
-const emit = defineEmits(["onLobbyCreated", "onNewUserConnected"]);
+const emit = defineEmits(["onLobbyCreated", "onNewUserConnected", "onGameStarted"]);
 const isLobbyCreated = ref(false);
 const isGameStarted = ref(false);
 
 const lobby = ref(null);
+
+const isUserLobbyCreator = ref(false);
 
 const copyToClipboard = () => {
   var textarea = document.createElement("textarea");
@@ -55,10 +48,26 @@ const createLobby = async () => {
       router.replace({ query: { ...route.query, lobby: lobby.value.lobbyId } });
 
       LobbySocket.connect(lobby.value.lobbyId, (data) => {
-        emit("onNewUserConnected", data);
+        console.log(data);
+        if (data["users"] != null) {
+          emit("onNewUserConnected", data['users']);
+          if (Object.keys(data["users"]).length === 3) {
+            isGameStarted.value = true;
+            emit("onGameStarted");
+          }
+        };
       });
+
+      isUserLobbyCreator.value = true;
     })
     .catch((e) => {});
+};
+
+const startGame = async () => {
+  // isGameStarted.value = true;
+  // LobbySocket.send({
+  //   "message": "Start!!!"
+  // })
 };
 
 onMounted(async () => {
@@ -69,7 +78,15 @@ onMounted(async () => {
       emit("onLobbyCreated");
 
       LobbySocket.connect(route.query.lobby, (data) => {
-        emit("onNewUserConnected", data);
+        console.log(data);
+        if (data["users"] != null) {
+          emit("onNewUserConnected", data['users']);
+          console.log(Object.keys(data["users"]).length)
+          if (Object.keys(data["users"]).length === 3) {
+            isGameStarted.value = true;
+            emit("onGameStarted");
+          }
+        }
       });
     });
   }
