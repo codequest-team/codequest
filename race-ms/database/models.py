@@ -11,3 +11,9 @@ class Task(Model):
 
     def __str__(self):
         return self.title
+
+class MultiplayerTask(Model):
+    theme = fields.CharField(max_length=200)
+    task_description = fields.CharField(max_length=10000)
+    text = fields.CharField(max_length=2000)
+    expected_result = fields.CharField(max_length=200)
