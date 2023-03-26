@@ -29,9 +29,10 @@ def stringify_dict(bstring_dict):
 def connect_to_lobby(lobby_id: str, user: models.User):
     lobby = redis_db.hgetall(lobby_id)
     print(lobby.values())
-    if lobby[b'creator'].decode("utf-8") != user.username and bytes(user.username, 'utf-8') not in lobby.values():
-        lobby[len(lobby.keys())] = user.username
-        redis_db.hmset(lobby_id, lobby)
+    if b'creator' in lobby.keys():
+        if lobby[b'creator'].decode("utf-8") != user.username and bytes(user.username, 'utf-8') not in lobby.values():
+            lobby[len(lobby.keys())] = user.username
+            redis_db.hmset(lobby_id, lobby)
 
     return stringify_dict(redis_db.hgetall(lobby_id))
 
