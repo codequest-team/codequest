@@ -17,8 +17,8 @@ app = FastAPI(
     version='1.0.0',
 )
 
-#origins = settings.ALLOWED_HOSTS.split(',')
-origins = ['*']
+origins = settings.ALLOWED_HOSTS.split(',')
+# origins = ['*']
 
 app.add_middleware(
     CORSMiddleware,
