@@ -164,6 +164,7 @@ PRODS=$(
     working_dir: /race-ms
     env_file:
       - ./.envs/.production_encrypted/.race-ms
+      - ./.envs/.production_encrypted/.auth-ms
       - ./.envs/.production_encrypted/.postgres
       - ./.envs/.production_encrypted/.redis
     ports:

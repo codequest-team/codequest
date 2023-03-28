@@ -1,1 +1,1 @@
-ALLOWED_HOSTS = "http://codequest.online,http://codequest.online:80,http://codequest.online:5000,http://codequest.online:8000"
+ALLOWED_HOSTS = "*,http://codequest.online,http://codequest.online:80,http://codequest.online:5000,http://codequest.online:8000"

@@ -1,1 +1,1 @@
-ALLOWED_HOSTS = "https://codequest.online,https://codequest.online/auth-ms,https://codequest.online/race-ms"
+ALLOWED_HOSTS = "*,https://codequest.online,https://codequest.online/auth-ms,https://codequest.online/race-ms"
