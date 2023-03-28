@@ -15,7 +15,7 @@ router.beforeEach(async (to, from, next) => {
       await store.dispatch("getUser");
       next();
     } else {
-      next("/log-in");
+      next(`/log-in?target=${to.fullPath}`);
     }
   } else {
     next();

@@ -34,3 +34,4 @@ async def validate_answer(level: int, regex: Annotated[str, Form()],) -> TaskRes
 @router.get("/", tags=["learn"])
 async def get_tasks() -> list[Task]:
     return await TaskModel.all()
+

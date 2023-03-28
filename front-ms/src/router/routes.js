@@ -21,6 +21,12 @@ export default [
     meta: { layout: "default", needsAuthorization: true },
   },
   {
+    path: "/regex-race-multi",
+    name: "RegexRaceMulti",
+    component: () => import("../pages/games/regex-race-multi/game.vue"),
+    meta: { layout: "default", needsAuthorization: true },
+  },
+  {
     path: "/log-in",
     name: "LogIn",
     component: () => import("../pages/log-in/log-in.vue"),

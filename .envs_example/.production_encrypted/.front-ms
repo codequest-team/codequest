@@ -1,0 +1,7 @@
+VITE_APP_VUEX_STRICT=true
+
+VITE_APP_AUTH_BASE_URL=https://codequest.online/auth-ms
+VITE_APP_RACE_BASE_URL=https://codequest.online/race-ms
+VITE_APP_RACE_BASE_URL_WS=ws://codequest.online:8000
+
+VITE_APP_HOST=https://codequest.online

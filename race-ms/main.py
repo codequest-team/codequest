@@ -1,9 +1,14 @@
-from fastapi import FastAPI
+import redis
+import json
+
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
 
+import services
 from api import router
 from config import settings
+from connection_manager import ConnectionManager
 
 app = FastAPI(
     title='Regex Racing',
@@ -12,8 +17,8 @@ app = FastAPI(
     version='1.0.0',
 )
 
-#origins = settings.ALLOWED_HOSTS.split(',')
-origins = ['*']
+origins = settings.ALLOWED_HOSTS.split(',')
+# origins = ['*']
 
 app.add_middleware(
     CORSMiddleware,
@@ -34,3 +39,24 @@ register_tortoise(
 
 
 app.include_router(router)
+
+manager = ConnectionManager()
+
+@app.websocket("/lobby/{lobby_id}/ws")
+async def websocket_endpoint(
+    *,
+    lobby_id: str,
+    token: str|None,
+    websocket: WebSocket,
+):
+    await manager.connect(websocket)
+    try:
+        while True:
+            if token is not None:
+                lobby_data = services.connect_to_lobby(lobby_id, services.get_current_user(token))
+                await manager.broadcast(json.dumps(lobby_data))
+            data = await websocket.receive_json()
+            await manager.broadcast('start game!')
+
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)

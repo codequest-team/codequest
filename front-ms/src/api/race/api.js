@@ -8,6 +8,9 @@ import { Notify } from "quasar";
 
 const api = axios.create({
   baseURL: `${CONF.RACE_BASE_URL}/`,
+  headers: {
+    Authorization: localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "",
+  },
   transformResponse: [
     function (data) {
       // Конвертируем все имена переменных в camelKeys
