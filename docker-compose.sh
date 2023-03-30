@@ -25,7 +25,7 @@ DEV=$(
   auth-ms:
     container_name: 'auth-ms'
     build: ./auth-ms/
-    command: python main.py
+    command: gunicorn main:app --bind 0.0.0.0:5000
     restart: always
     env_file:
       - ./.envs/.local/.auth-ms
@@ -87,7 +87,7 @@ PROD=$(
   auth-ms:
     container_name: 'auth-ms'
     build: ./auth-ms/
-    command: python main.py
+    command: gunicorn main:app --bind 0.0.0.0:5000
     restart: always
     env_file:
       - ./.envs/.production/.auth-ms
@@ -150,7 +150,7 @@ PRODS=$(
   auth-ms:
     container_name: 'auth-ms'
     build: ./auth-ms/
-    command: python main.py
+    command: gunicorn main:app --bind 0.0.0.0:5000
     restart: always
     env_file:
       - ./.envs/.production_encrypted/.auth-ms
