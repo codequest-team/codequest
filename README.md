@@ -1,25 +1,41 @@
-## Тема:
-### Мини-игры для развития определенных навыков в программировании
->  Описание:
->
->  Гонки на регулярках.
->  Микросервисы бла-бла lorem text...
+# CodeQuest
+> Проект реализован в рамках development hackathon.<br>
+> Тема: Мини-игры для развития определенных навыков в программировании
 
-## GitFlow:
-- В ветке `master` проект готовый к релизу
-- В `develop` ведем разработку и вмерживаем ветки фич
-- Под каждый сервис своя ветка
-(директория сервиса располагается в корневом каталоге проекта)
-![gitflow](./.readme-static/gitflow.jpg)
+> Авторы: [Дюсенов Асет](https://dyussenov.dev/), [Ким Максим](https://github.com/exynil), [Песков Сергей](https://peskov.dev/)
 
-  И не забывайте, 1 готовый блок кода (фича) = 1 коммит.
+CodeQuest - игровая платформа представляющая коллекцию игр для разивтия определенных
+скиллов в программировании. В качестве mvp представленна игра: **Гонки на регулярках**
 
+<img src="./.readme-static/main_menu.png">
 
-## Setup:
+## RegexRace
+Регулярки в языках программирования это очень мощный инструмент,
+но к сожалению у многих он хромает.
+
+**RegexRace** имеет 2 режима:
+1) Обучающий режим. Блок с теорией позволяющий подятнуть базу по регуляркам
+<img src="./.readme-static/learn_fail.png">
+<img src="./.readme-static/learn_success.png">
+2) Рейтинговый режим - позволяет пользователям соревноваться в написании регулярок на перегонки.
+<img src="./.readme-static/competition.png">
+
+# Setup:
 - `git clone https://github.com/codequest-team/codequest.git`
 - `cd codequest`
-- In the root of the project create `.env` file (and substitute your values if necessary):
+- copy .envs and substitute your values if necessary:
+  ```bash
+  cp -r .envs_example .envs
   ```
-  echo 'JWT_SECRET_KEY="e7c83a28f8b8d597afedf2134979ed8ae9f472d1"' > .env
+- generate docker-compose with `docker-compose.sh` (param `dev` for local lauch)
+  ```bash
+  ./docker-compose.sh dev
   ```
-- `docker-compose up --build`
+  or
+  ```bash
+  ./docker-compose.sh prod
+  ```
+- run project
+  ```bash
+  docker-compose up --build
+  ```
